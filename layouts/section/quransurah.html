@@ -1,0 +1,44 @@
+{{partial "preamble" .}}
+
+{{$surahar := (index $.Site.Data.Quran.Ar (.Params.no | string)).data}}
+{{$surahbn := (index $.Site.Data.Quran.Bn (.Params.no | string)).data}}
+
+<ul class="uk-subnav uk-subnav-pill uk-flex uk-flex-center" uk-margin>
+	<li>
+		<a href="#">আয়াত <span uk-icon="icon: triangle-down"></span></a>
+		<div uk-dropdown="mode: click; pos: bottom-center;">
+			<ul class="uk-nav uk-dropdown-nav">
+				{{range $i, $ayat := $surahbn.ayahs}}
+					{{$no := add $i 1}}
+					<li><a href="#ayat{{$no}}" uk-scroll="offset: 80;">{{index $.Site.Data.Numbers.Bengali $no}}</a></li>
+				{{end}}
+			</ul>
+		</div>
+	</li>
+</ul>
+
+<div class="uk-position-fixed uk-position-small uk-position-bottom-right">
+	<a href="#" class="uk-icon-button" uk-totop uk-scroll></a>
+</div>
+
+<table class="uk-table uk-table-divider">
+	<tbody>
+		{{range $i, $ayat := $surahbn.ayahs}}
+			{{$no := add $i 1}}
+			<tr>
+				<td {{if not .Params.notAyat}}id="ayat{{$no}}"{{end}}>
+					<h2 class="uk-heading-small arabic ayat">
+						{{(index $surahar.ayahs $i).text}}
+						<span class="number">{{index $.Site.Data.Numbers.Arabic $no}}</span>
+					</h2>
+					<div class="uk-text-large bengali">
+						<span style="float: left; margin-right: 10px;">{{index $.Site.Data.Numbers.Bengali $no}}।</span>
+						{{$ayat.text}}
+					</div>
+				</td>
+			</tr>
+		{{end}}
+	</tbody>
+</table>
+
+{{partial "postamble" .}}

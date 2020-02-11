@@ -3,7 +3,7 @@
 	"short_name": "Islami Pathshala",
 	"description": "The place for competitive programmers.",
 	"start_url": "/",
-	"background_color": "white",
+	"background_color": "#006c35",
 	"orientation": "any",
 	"display": "standalone",
 	"icons": [
@@ -13,9 +13,21 @@
 			"type": "image/png"
 		},
 		{
+			"src": "/appicon_256p.png",
+			"sizes": "256x256",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
 			"src": "/appicon_512p.png",
 			"sizes": "512x512",
 			"type": "image/png"
+		},
+		{
+			"src": "/appicon_512p.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
 		}
 	]
 }

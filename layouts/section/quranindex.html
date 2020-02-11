@@ -1,0 +1,21 @@
+{{partial "preamble" .}}
+
+
+<table class="uk-table uk-table-divider">
+	<tbody>
+		{{range seq 114}}
+			<tr>
+				<td>
+					<a href="/quran/{{.}}/" class="uk-link-reset">
+						<h2 class="bengali" style="margin-bottom: 0;">{{index $.Site.Data.Numbers.Bengali .}}। {{index $.Site.Data.Surahs.Bengali .}}</h2>
+						<div>
+							{{index $.Site.Data.Surahs.Arabic .}}
+						</div>
+					</a>
+				</td>
+			</tr>
+		{{end}}
+	</tbody>
+</table>
+
+{{partial "postamble" .}}

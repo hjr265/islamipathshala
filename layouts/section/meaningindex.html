@@ -1,0 +1,17 @@
+{{partial "preamble" .}}
+
+<table class="uk-table uk-table-divider">
+	<tbody>
+		{{range .Pages}}
+			<tr>
+				<td>
+					<a href="{{.RelPermalink}}" class="uk-link-reset">
+						<h2 class="bengali" style="margin-bottom: 0;">{{.Title}}</h2>
+					</a>
+				</td>
+			</tr>
+		{{end}}
+	</tbody>
+</table>
+
+{{partial "postamble" .}}

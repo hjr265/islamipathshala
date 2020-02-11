@@ -1,4 +1,4 @@
 ---
 title: "আল-বাকারা"
-layout: "ayats"
+layout: "meaningsurah"
 ---

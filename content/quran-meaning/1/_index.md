@@ -1,5 +1,5 @@
 ---
 title: "আল-ফাতিহা"
-layout: "ayats"
+layout: "meaningsurah"
 ---
 

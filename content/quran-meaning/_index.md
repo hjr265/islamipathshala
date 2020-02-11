@@ -1,3 +1,3 @@
 ---
-layout: "surahs"
+layout: "meaningindex"
 ---
