@@ -1,0 +1,17 @@
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.3.1/js/uikit.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.3.1/js/uikit-icons.min.js"></script>
+		<script type="text/javascript">
+			(function() {
+				if (!navigator.serviceWorker) {
+					return;
+				}
+				navigator.serviceWorker.register('/sw.js', {
+					scope: '/'
+				});
+			})();
+		</script>
+	</body>
+</html>

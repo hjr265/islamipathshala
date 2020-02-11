@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ইসলামী পাঠশালা &middot; Islami Pathshala</title>
+		<meta charset="utf-8">
+		<link rel="manifest" href="/islamipathshala.webmanifest">
+		<link rel="icon" type="image/png" href="/emblem_32p.png">
+		<link rel="apple-touch-icon" type="image/png" href="/appleicon.png">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amiri|Atma" type="text/css" media="all" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.3.1/css/uikit.min.css" />
+		<link rel="stylesheet" href="/screen.css" />
+	</head>
+	<body>
+		<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+			<nav class="uk-navbar-container uk-margin" uk-navbar>
+				{{if not .IsHome}}
+					<div class="uk-navbar-left">
+						<a class="uk-navbar-item" href="{{.Parent.RelPermalink}}">
+							<span uk-icon="icon: arrow-left; ratio: 2;"></span>
+						</a>
+					</div>
+				{{end}}
+				<div class="uk-navbar-center">
+					<a class="uk-navbar-item uk-logo" href="/">
+						<img src="/appicon_512p.png" style="height: 48px; margin-right: 16px;" />
+						ইসলামী পাঠশালা
+					</a>
+				</div>
+			</nav>
+		</div>
+
+		<div class="uk-section">
+			<div class="uk-container">

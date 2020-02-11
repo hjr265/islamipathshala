@@ -1,0 +1,21 @@
+{
+	"name": "Islami Pathshala",
+	"short_name": "Islami Pathshala",
+	"description": "The place for competitive programmers.",
+	"start_url": "/",
+	"background_color": "white",
+	"orientation": "any",
+	"display": "standalone",
+	"icons": [
+		{
+			"src": "/appicon_256p.png",
+			"sizes": "256x256",
+			"type": "image/png"
+		},
+		{
+			"src": "/appicon_512p.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
+}

@@ -1,0 +1,61 @@
+{{partial "preamble" .}}
+
+<ul class="uk-subnav uk-subnav-pill uk-flex uk-flex-center" uk-margin>
+	<li>
+		<a href="#">আয়াত <span uk-icon="icon: triangle-down"></span></a>
+		<div uk-dropdown="mode: click; pos: bottom-center;">
+			<ul class="uk-nav uk-dropdown-nav">
+				{{range sort .Pages "File.BaseFileName"}}
+					{{if not .Params.notAyat}}
+						{{$no := .File.BaseFileName | strings.TrimLeft "0" | int}}
+						<li><a href="#ayat{{.File.BaseFileName}}" uk-scroll="offset: 80;">{{index .Site.Data.Numbers.Bengali $no}}</a></li>
+					{{end}}
+				{{end}}
+			</ul>
+		</div>
+	</li>
+</ul>
+
+<div class="uk-position-fixed uk-position-small uk-position-bottom-right">
+	<a href="#" class="uk-icon-button" uk-totop uk-scroll></a>
+</div>
+
+<table class="uk-table uk-table-divider">
+	<tbody>
+		{{range sort .Pages "File.BaseFileName"}}
+			<tr>
+				<td {{if not .Params.notAyat}}id="ayat{{.File.BaseFileName}}"{{end}}>
+					<h2 class="uk-heading-small arabic ayat">
+						{{.Title}}
+						{{if not .Params.notAyat}}
+							{{$no := .File.BaseFileName | strings.TrimLeft "0" | int}}
+							<span class="number">{{index .Site.Data.Numbers.Arabic $no}}</span>
+						{{end}}
+					</h2>
+					{{if .Content}}
+						<div class="uk-text-large bengali">
+							{{if not .Params.notAyat}}
+								{{$no := .File.BaseFileName | strings.TrimLeft "0" | int}}
+								<span style="float: left; margin-right: 10px;">{{index .Site.Data.Numbers.Bengali $no}}।</span>
+							{{end}}
+							{{.Content}}
+						</div>
+					{{end}}
+					{{range .Params.words}}
+						<dl>
+							<dt class="arabic uk-text-large">{{.ar}}</dt>
+							<dd class="bengali">
+								<div class="uk-text-large">{{.bn}}</div>
+								{{if .bnnote}}
+									<div class="note">{{.bnnote}}</div>
+								{{end}}
+							</dd>
+						</dl>
+					{{end}}
+				</td>
+			</tr>
+		{{end}}
+	</tbody>
+</table>
+
+{{partial "postamble" .}}
