@@ -1,0 +1,28 @@
+before_script:
+    - echo "$PRODUCTION_S3CMD_CONFIGURATION" > $HOME/.s3cfg
+
+cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+        - node_modules
+
+stages:
+    - build
+    - deploy
+
+deploy:production:
+    image: registry.furqansoftware.net/furqansoftware/website-foundry:0.7
+    stage: deploy
+    environment:
+        name: production
+        url: https://islamipathshala.com/
+    only:
+        - master
+    script:
+        - echo "$PRODUCTION_HUGO_CONFIGURATION" > config.toml
+        - hugo
+        - find public -size 0 -type f -delete
+        - rm public/sitemap.xml
+        - s3cmd sync --delete-removed --delete-after --acl-public public/ s3://$PRODUCTION_S3_BUCKET_NAME
+        - curl -X POST "https://api.cloudflare.com/client/v4/zones/$PRODUCTION_CLOUDFLARE_ZONE_ID/purge_cache" -H "Authorization:Bearer $PRODUCTION_CLOUDFLARE_API_TOKEN" -H 'Content-Type:application/json' --data '{"purge_everything":true}'
+    when: manual
