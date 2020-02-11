@@ -1,5 +1,21 @@
 {{partial "preamble" .}}
 
+<ul uk-accordion="toggle: .uk-accordion-toggler">
+	<li>
+		<span class="uk-inline">
+			<span class="uk-accordion-toggler uk-position-center-right" uk-icon="icon: info; ratio: 2;"></span>
+			<h1 class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-xlarge-right">কুরআন কারীমের মর্মার্থ ও শব্দার্থ</h1>
+		</span>
+		<div class="uk-accordion-content">
+			<img src="/book-cover-image.jpg" alt="কুরআন কারীমের মর্মার্থ ও শব্দার্থ">
+
+			{{.Content}}
+
+			<hr>
+		</div>
+	</li>
+</ul>
+
 <table class="uk-table uk-table-divider">
 	<tbody>
 		{{range .Pages}}
