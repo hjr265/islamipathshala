@@ -11,7 +11,7 @@ stages:
     - deploy
 
 deploy:production:
-    image: registry.furqansoftware.net/furqansoftware/website-foundry:0.7
+    image: registry.furqansoftware.net/furqansoftware/website-foundry:0.8
     stage: deploy
     environment:
         name: production
