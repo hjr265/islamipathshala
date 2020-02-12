@@ -7,9 +7,15 @@
 			<tr>
 				<td>
 					<a href="/quran/{{.}}/" class="uk-link-reset">
-						<h2 class="bengali" style="margin-bottom: 0;">{{index $.Site.Data.Numbers.Bengali .}}। {{index $.Site.Data.Surahs.Bengali .}}</h2>
-						<div>
-							{{index $.Site.Data.Surahs.Arabic .}}
+						<div uk-grid>
+							<div class="uk-width-expand">
+								<h2 class="bengali">{{index $.Site.Data.Numbers.Bengali .}}। {{index $.Site.Data.Surahs.Bengali .}}</h2>
+							</div>
+							<div class="uk-width-auto">
+								<h3 class="arabic uk-margin-remove-bottom">
+									{{index $.Site.Data.Surahs.Arabic .}}
+								</h3>
+							</div>
 						</div>
 					</a>
 				</td>

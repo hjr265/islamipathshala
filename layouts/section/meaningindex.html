@@ -18,11 +18,21 @@
 
 <table class="uk-table uk-table-divider">
 	<tbody>
-		{{range .Pages}}
+		{{range $i, $page := .Pages}}
+			{{$no := add $i 1}}
 			<tr>
 				<td>
-					<a href="{{.RelPermalink}}" class="uk-link-reset">
-						<h2 class="bengali" style="margin-bottom: 0;">{{.Title}}</h2>
+					<a href="{{$page.RelPermalink}}" class="uk-link-reset">
+						<div uk-grid>
+							<div class="uk-width-expand">
+								<h2 class="bengali">{{index $.Site.Data.Numbers.Bengali $no}}। {{$page.Title}}</h2>
+							</div>
+							<div class="uk-width-auto">
+								<h3 class="arabic uk-margin-remove-bottom">
+									{{index $.Site.Data.Surahs.Arabic $no}}
+								</h3>
+							</div>
+						</div>
 					</a>
 				</td>
 			</tr>
