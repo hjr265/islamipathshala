@@ -16,7 +16,7 @@
 					{{if .Params.source}}
 						<div class="uk-text-large uk-text-muted bengali">
 							{{if eq .Params.source.kind "ayat"}}
-								<p><a href="/quran/{{.Params.source.surah}}#ayat{{.Params.source.ayat}}" class="uk-link-reset">আল কুরআন সুরা {{index $.Site.Data.Surahs.Bengali .Params.source.surah}} {{index $.Site.Data.Numbers.Bengali .Params.source.surah}}:{{index $.Site.Data.Numbers.Bengali .Params.source.ayat}}</a></p>
+								<p><a href="/quran/{{.Params.source.surah}}/#ayat{{.Params.source.ayat}}" class="uk-link-reset">আল কুরআন সুরা {{index $.Site.Data.Surahs.Bengali .Params.source.surah}} {{index $.Site.Data.Numbers.Bengali .Params.source.surah}}:{{index $.Site.Data.Numbers.Bengali .Params.source.ayat}}</a></p>
 							{{end}}
 						</div>
 					{{end}}
