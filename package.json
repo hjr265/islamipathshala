@@ -1,0 +1,20 @@
+{
+  "name": "pwapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "build": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "[git@git.furqansoftware.net:60422]:islamipathshala/pwapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-shell": "^0.8.0",
+    "workbox-build": "^5.0.0"
+  }
+}
