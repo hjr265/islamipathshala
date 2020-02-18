@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const shell = require('gulp-shell');
 const workbox = require('workbox-build');
 
-var clean = shell.task('rm -r public/');
+var clean = shell.task('rm -rf public/');
 
 var hugo = shell.task('hugo');
 
