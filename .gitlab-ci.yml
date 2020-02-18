@@ -20,7 +20,8 @@ deploy:production:
         - master
     script:
         - echo "$PRODUCTION_HUGO_CONFIGURATION" > config.toml
-        - hugo
+        - npm install
+        - npm run build
         - find public -size 0 -type f -delete
         - rm public/sitemap.xml
         - s3cmd sync --delete-removed --delete-after --acl-public public/ s3://$PRODUCTION_S3_BUCKET_NAME
