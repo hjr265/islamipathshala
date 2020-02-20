@@ -4,6 +4,9 @@ body,
 .uk-dropdown-nav > li > a {
 	color: #2f353b;
 }
+body {
+	font-family: 'Ubuntu', sans-serif;
+}
 .uk-subnav > * > :first-child,
 .uk-dropdown-nav {
 	font-size: 1.25em;
