@@ -1,0 +1,54 @@
+{{partial "preamble" .}}
+
+<div id="noLocation" class="uk-alert-danger" uk-alert style="display: none;">
+	<p>We could not retrieve your current location.</p>
+</div>
+
+<table id="timings" class="uk-table uk-table-divider">
+	<tbody>
+		<tr>
+			<td>Fajr</td>
+			<td id="fajr" class="uk-text-right"></td>
+		</tr>
+		<tr class="uk-text-muted">
+			<td>Sunrise</td>
+			<td id="sunrise" class="uk-text-right"></td>
+		</tr>
+		<tr>
+			<td>Dhuhr</td>
+			<td id="dhuhr" class="uk-text-right"></td>
+		</tr>
+		<tr>
+			<td>Asr</td>
+			<td id="asr" class="uk-text-right"></td>
+		</tr>
+		<tr class="uk-text-muted">
+			<td>Sunset</td>
+			<td id="sunset" class="uk-text-right"></td>
+		</tr>
+		<tr>
+			<td>Maghrib</td>
+			<td id="maghrib" class="uk-text-right"></td>
+		</tr>
+		<tr>
+			<td>Isha</td>
+			<td id="isha" class="uk-text-right"></td>
+		</tr>
+		<tr class="uk-text-muted">
+			<td>Imsak</td>
+			<td id="imsak" class="uk-text-right"></td>
+		</tr>
+		<tr class="uk-text-muted">
+			<td>Midnight</td>
+			<td id="midnight" class="uk-text-right"></td>
+		</tr>
+	</tbody>
+</table>
+
+<div id="logs">
+</div>
+
+<script src="/vendor/moment.min.js"></script>
+<script src="/adhan.js"></script>
+
+{{partial "postamble" .}}
