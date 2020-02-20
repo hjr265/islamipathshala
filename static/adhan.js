@@ -1,4 +1,25 @@
 (function() {
+	var digitsBn = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+	var digitsAr = ["٠" ,"١" ,"٢" ,"٣" ,"٤" ,"٥" ,"٦" ,"٧" ,"٨", "٩"];
+	var monthsBn = ["", "জানুয়ারী", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "অগাস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+	var monthsAr = ["", "مُحَرَّم", "صَفَر", "رَبِيْعُ الأَوّل", "رَبِيْعُ الثَّانِي", "جَمَادِي الأَوّل", "جَمَادِي الثَّانِي", "رَجَب", "شَعْبَان", "رَمَضَان", "شَوَّال", "ذُوالْقَعْدَة", "ذُوالْحِجَّة"];
+
+	function numberBn(s) {
+		return s.replace(/\d/g, function(c) {
+			return digitsBn[parseInt(c)];
+		});
+	}
+
+	function numberAr(s) {
+		return s.replace(/\d/g, function(c) {
+			return digitsAr[parseInt(c)];
+		});
+	}
+
+	function meridiemBn(s) {
+		return s.replace("AM", "পূর্বাহ্ণ").replace("PM", "অপরাহ্ণ");
+	}
+
 	// Prayer Times
 
 	var coords,
@@ -24,7 +45,7 @@
 			}
 		}
 		
-		var url = '//api.aladhan.com/v1/timings/'+now.format('DD-MM-YYYY')+'?latitude='+coords.latitude+'&longitude='+coords.longitude+'&method=4';
+		var url = '//api.aladhan.com/v1/timings/'+now.unix()+'?latitude='+coords.latitude+'&longitude='+coords.longitude+'&method=4';
 		log('Fetching '+url);
 		fetch(url, {
 			mode: 'cors',
@@ -45,12 +66,24 @@
 	}
 
 	function render(timings, date) {
-		document.body.querySelector('#gregorian').textContent = date.gregorian.day+' '+date.gregorian.month.en+' '+date.gregorian.year;
-		document.body.querySelector('#hijri').textContent = date.hijri.day+' '+date.hijri.month.en+' '+date.hijri.year;
+		document.body.querySelector('#gregorian').textContent = numberBn(date.gregorian.day)+' '+monthsBn[date.gregorian.month.number]+' '+numberBn(date.gregorian.year);
+		document.body.querySelector('#hijri').textContent = numberAr(date.hijri.day)+' '+monthsAr[date.hijri.month.number]+' '+numberAr(date.hijri.year);
+		document.body.querySelector('#hijri').setAttribute('uk-tooltip', date.hijri.day+' '+date.hijri.month.en+' '+date.hijri.year);
+		var current = null;
 		Object.keys(timings).forEach(function(k) {
-			var timing = timings[k];
-			document.body.querySelector("#"+k.toLowerCase()).textContent = moment(timing, 'HH:mm').format('h:mm A');
+			if (['Imsak', 'Midnight'].indexOf(k) !== -1) {
+				return;
+			}
+			var timing = moment(timings[k], 'HH:mm');
+			document.body.querySelector("#"+k.toLowerCase()).textContent = meridiemBn(numberBn(timing.format('h:mm A')));
+			console.log(k, timing.isBefore())
+			if (timing.isBefore()) {
+				current = k;
+			}
 		});
+		if (current) {
+			document.body.querySelector("#"+current.toLowerCase()).parentNode.classList.add('uk-text-primary');
+		}
 	}
 
 	function log(message) {
