@@ -22,8 +22,7 @@
 
 	// Prayer Times
 
-	var coords,
-		alpha = 0;
+	var coords;
 
 	function update() {
 		if (!coords) {
@@ -71,17 +70,17 @@
 		document.body.querySelector('#hijri').setAttribute('uk-tooltip', date.hijri.day+' '+date.hijri.month.en+' '+date.hijri.year);
 		var current = null;
 		Object.keys(timings).forEach(function(k) {
-			if (['Imsak', 'Midnight'].indexOf(k) !== -1) {
+			var timing = moment(timings[k], 'HH:mm');
+			var el = document.body.querySelector("#"+k.toLowerCase());
+			if (!el) {
 				return;
 			}
-			var timing = moment(timings[k], 'HH:mm');
-			document.body.querySelector("#"+k.toLowerCase()).textContent = meridiemBn(numberBn(timing.format('h:mm A')));
-			console.log(k, timing.isBefore())
+			el.textContent = meridiemBn(numberBn(timing.format('h:mm A')));
 			if (timing.isBefore()) {
 				current = k;
 			}
 		});
-		if (current) {
+		if (['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].indexOf(current) !== -1) {
 			document.body.querySelector("#"+current.toLowerCase()).parentNode.classList.add('uk-text-primary');
 		}
 	}
