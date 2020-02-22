@@ -3,6 +3,13 @@
 	var digitsAr = ["٠" ,"١" ,"٢" ,"٣" ,"٤" ,"٥" ,"٦" ,"٧" ,"٨", "٩"];
 	var monthsBn = ["", "জানুয়ারী", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "অগাস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
 	var monthsAr = ["", "مُحَرَّم", "صَفَر", "رَبِيْعُ الأَوّل", "رَبِيْعُ الثَّانِي", "جَمَادِي الأَوّل", "جَمَادِي الثَّانِي", "رَجَب", "شَعْبَان", "رَمَضَان", "شَوَّال", "ذُوالْقَعْدَة", "ذُوالْحِجَّة"];
+	var prayersAr = {
+		'Fajr': 'ফজর',
+		'Dhuhr': 'যুহর',
+		'Asr': 'আছর',
+		'Maghrib': 'মাগরিব',
+		'Isha': 'ইশা'
+	};
 
 	function numberBn(s) {
 		return s.replace(/\d/g, function(c) {
@@ -31,15 +38,20 @@
 
 		var now = moment();
 
-		var cachedData = localStorage.getItem('adhan:timings');
-		if (cachedData) {
-			cachedData = JSON.parse(cachedData);
+		var data = localStorage.getItem('adhan:timings');
+		if (data) {
+			data = JSON.parse(data);
 
-			render(cachedData.timings, cachedData.date);
+			var card = document.querySelector('#adhan.uk-card');
+			if (card) {
+				renderCard(card, data.timings, data.date);
+			} else {
+				render(data.timings, data.date);
+			}
 
-			if (now.diff(cachedData.cachedAt, 'hours') < 4 &&
-					Math.abs(coords.latitude-cachedData.meta.latitude) < 0.0004 && 
-					Math.abs(coords.longitude-cachedData.meta.longitude) < 0.0004) {
+			if (now.diff(data.cachedAt, 'hours') < 4 &&
+					Math.abs(coords.latitude-data.meta.latitude) < 0.0004 && 
+					Math.abs(coords.longitude-data.meta.longitude) < 0.0004) {
 				return;
 			}
 		}
@@ -54,14 +66,42 @@
 			return resp.json();
 		})
 		.then(function(body) {
-			render(body.data.timings, body.data.date);
+			var card = document.querySelector('#adhan.uk-card');
+			if (card) {
+				renderCard(card, body.data.timings, body.data.date);
+			} else {
+				render(body.data.timings, body.data.date);
+			}
 			localStorage.setItem('adhan:timings', JSON.stringify({
 				timings: body.data.timings,
 				date: body.data.date,
 				meta: body.data.meta,
 				cachedAt: now.toDate()
 			}));
+		})
+		.catch(function() {
+			document.getElementById('noInternet').style.display = 'block';
 		});
+	}
+
+	function renderCard(card, timings, date) {
+		card.style.display = '';
+		card.querySelector('.gregorian').textContent = numberBn(date.gregorian.day)+' '+monthsBn[date.gregorian.month.number]+' '+numberBn(date.gregorian.year);
+		card.querySelector('.hijri').textContent = numberAr(date.hijri.day)+' '+monthsAr[date.hijri.month.number]+' '+numberAr(date.hijri.year);
+		var current = null;
+		Object.keys(timings).forEach(function(k) {
+			if (['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].indexOf(k) === -1) {
+				return;
+			}
+			var timing = moment(timings[k], 'HH:mm');
+			if (!current && timing.isAfter()) {
+				current = k;
+			}
+		});
+		if (current) {
+			var timing = moment(timings[current], 'HH:mm');
+			card.querySelector('.uk-card-title').textContent = prayersAr[current]+' — '+meridiemBn(numberBn(timing.format('h:mm A')));
+		}
 	}
 
 	function render(timings, date) {
@@ -71,11 +111,11 @@
 		var current = null;
 		Object.keys(timings).forEach(function(k) {
 			var timing = moment(timings[k], 'HH:mm');
-			var el = document.body.querySelector("#"+k.toLowerCase());
-			if (!el) {
+			var cell = document.body.querySelector("#"+k.toLowerCase());
+			if (!cell) {
 				return;
 			}
-			el.textContent = meridiemBn(numberBn(timing.format('h:mm A')));
+			cell.textContent = meridiemBn(numberBn(timing.format('h:mm A')));
 			if (timing.isBefore()) {
 				current = k;
 			}
@@ -89,23 +129,25 @@
 		if (location.hash !== '#debug') {
 			return;
 		}
-		var el = document.getElementById('logs');
-		var l = document.createElement('div');
-		l.innerText = message;
-		el.insertBefore(l, el.firstChild);
+		var logs = document.getElementById('logs');
+		var line = document.createElement('div');
+		line.innerText = message;
+		logs.insertBefore(line, logs.firstChild);
 	}
 
 	if (navigator.geolocation && window.DeviceOrientationEvent) {
 		navigator.geolocation.getCurrentPosition(function(pos) {
 			coords = pos.coords;
 			update();
+			localStorage.setItem('adhan:active', true);
 		}, function(err) {
-			document.getElementById('noLocation').style.display = 'block';
+			var notice = document.getElementById('noLocation')
+			notice.style.display = 'block';
+			localStorage.setItem('adhan:active', false);
 		}, {
 			enableHighAccuracy: false,
 			timeout: 15000,
 			maximumAge: 0
 		});
 	}
-
 })()

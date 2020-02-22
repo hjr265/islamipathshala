@@ -1,5 +1,17 @@
 {{partial "preamble" .}}
 
+<div class="uk-child-width-1-1 uk-text-center" uk-grid>
+	<a href="/adhan/" class="uk-link-reset">
+		<div class="uk-card uk-card-small uk-card-default" id="adhan" style="display: none; border: 1px solid #006c35;">
+			<div class="uk-card-body">
+				<h3 class="uk-card-title"></h3>
+				<div class="gregorian"></div>
+				<div class="hijri"></div>
+			</div>
+		</div>
+	</a>
+</div>
+
 <div class="uk-child-width-1-4@s uk-text-center" uk-grid>
 	<a href="/quran-meaning/" class="uk-link-reset">
 		<div class="uk-card uk-card-small uk-card-default">
@@ -59,5 +71,19 @@
 		</div>
 	</a>
 </div>
+
+<script type="text/javascript">
+	(function() {
+		var active = localStorage.getItem('adhan:active');
+		if (active) {
+			var script = document.createElement('script');
+			script.src = '/vendor/moment.min.js';
+			document.body.appendChild(script);
+			script = document.createElement('script');
+			script.src = '/adhan.js';
+			document.body.appendChild(script);
+		}
+	})();
+</script>
 
 {{partial "postamble" .}}

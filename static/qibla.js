@@ -41,10 +41,10 @@ function log(message) {
 	if (location.hash !== '#debug') {
 		return;
 	}
-	var el = document.getElementById('logs');
-	var l = document.createElement('div');
-	l.innerText = message;
-	el.insertBefore(l, el.firstChild);
+	var logs = document.getElementById('logs');
+	var line = document.createElement('div');
+	line.innerText = message;
+	logs.insertBefore(l, logs.firstChild);
 }
 
 if (navigator.geolocation && window.DeviceOrientationEvent) {
