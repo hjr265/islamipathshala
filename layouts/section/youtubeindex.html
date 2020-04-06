@@ -1,23 +1,23 @@
 {{partial "preamble" .}}
 
-<table class="uk-table uk-table-divider">
-	<tbody>
-		{{range $i, $page := .Pages}}
-			{{$no := add $i 1}}
-			<tr>
-				<td>
-					<a href="{{$page.RelPermalink}}" class="uk-link-reset">
-						<div uk-grid>
-							<div class="uk-width-expand">
-								<div class="bengali uk-text-large">{{$page.Title}}</div>
-								<div class="bengali uk-text-muted">{{$page.Params.speaker}}</div>
-							</div>
-						</div>
-					</a>
-				</td>
-			</tr>
-		{{end}}
-	</tbody>
-</table>
+<div class="uk-child-width-1-1 uk-text-center" uk-grid>
+	{{range $i, $page := .Pages}}
+		{{$no := add $i 1}}
+		<a href="{{$page.RelPermalink}}" class="uk-link-reset">
+			<div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+				<div class="uk-card-media-left uk-cover-container">
+					<img src="http://i3.ytimg.com/vi/{{$page.Params.v}}/hqdefault.jpg" alt="" uk-cover>
+					<canvas width="480" height="360"></canvas>
+				</div>
+				<div>
+					<div class="uk-card-body">
+						<h3 class="uk-card-title bengali">{{$page.Title}}</h3>
+						<p class="bengali">{{$page.Params.speaker}}</p>
+					</div>
+				</div>
+			</div>
+		</a>
+	{{end}}
+</div>
 
 {{partial "postamble" .}}
