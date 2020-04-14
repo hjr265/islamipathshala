@@ -44,9 +44,9 @@
 
 			var card = document.querySelector('#adhan.uk-card');
 			if (card) {
-				renderCard(card, data.timings, data.date);
+				renderCard(card, data.timings, data.nextTimings, data.date);
 			} else {
-				render(data.timings, data.date);
+				renderTable(data.timings, data.date);
 			}
 
 			if (now.diff(data.cachedAt, 'hours') < 4 &&
@@ -66,25 +66,45 @@
 			return resp.json();
 		})
 		.then(function(body) {
-			var card = document.querySelector('#adhan.uk-card');
-			if (card) {
-				renderCard(card, body.data.timings, body.data.date);
-			} else {
-				render(body.data.timings, body.data.date);
-			}
+			var url = '//api.aladhan.com/v1/timings/'+now.add(1, 'day').unix()+'?latitude='+coords.latitude+'&longitude='+coords.longitude+'&method=4';
+			log('Fetching '+url);
+			return fetch(url, {
+				mode: 'cors',
+				credentials: 'same-origin'
+			})
+			.then(function(resp) {
+				return resp.json();
+			})
+			.then(function(body2) {
+				body.data.nextTimings = body2.data.timings
+				return body;
+			});
+		})
+		.then(function(body) {
 			localStorage.setItem('adhan:timings', JSON.stringify({
 				timings: body.data.timings,
+				nextTimings: body.data.nextTimings,
 				date: body.data.date,
 				meta: body.data.meta,
 				cachedAt: now.toDate()
 			}));
+			return body;
 		})
-		.catch(function() {
+		.then(function(body) {
+			var card = document.querySelector('#adhan.uk-card');
+			if (card) {
+				renderCard(card, body.data.timings, body.data.nextTimings, body.data.date);
+			} else {
+				renderTable(body.data.timings, body.data.date);
+			}
+		})
+		.catch(function(error) {
+			console.error(error);
 			document.getElementById('noInternet').style.display = 'block';
 		});
 	}
 
-	function renderCard(card, timings, date) {
+	function renderCard(card, timings, nextTimings, date) {
 		card.style.display = '';
 		card.querySelector('.gregorian').textContent = numberBn(date.gregorian.day)+' '+monthsBn[date.gregorian.month.number]+' '+numberBn(date.gregorian.year);
 		card.querySelector('.hijri').textContent = numberAr(date.hijri.day)+' '+monthsAr[date.hijri.month.number]+' '+numberAr(date.hijri.year);
@@ -98,13 +118,19 @@
 				current = k;
 			}
 		});
+		if (!current && nextTimings) {
+			var timing = moment(nextTimings['Fajr'], 'HH:mm');
+			if (!current && timing.isAfter()) {
+				current = k;
+			}
+		}
 		if (current) {
 			var timing = moment(timings[current], 'HH:mm');
 			card.querySelector('.uk-card-title').textContent = prayersAr[current]+' — '+meridiemBn(numberBn(timing.format('h:mm A')));
 		}
 	}
 
-	function render(timings, date) {
+	function renderTable(timings, date) {
 		document.body.querySelector('#gregorian').textContent = numberBn(date.gregorian.day)+' '+monthsBn[date.gregorian.month.number]+' '+numberBn(date.gregorian.year);
 		document.body.querySelector('#hijri').textContent = numberAr(date.hijri.day)+' '+monthsAr[date.hijri.month.number]+' '+numberAr(date.hijri.year);
 		document.body.querySelector('#hijri').setAttribute('uk-tooltip', date.hijri.day+' '+date.hijri.month.en+' '+date.hijri.year);
