@@ -21,7 +21,7 @@ function generateSW() {
 		runtimeCaching: [
 			{
 				urlPattern: /(?:\/)$/,
-				handler: "StaleWhileRevalidate",
+				handler: "NetworkFirst",
 				options: {
 					cacheName: "html",
 					expiration: {
