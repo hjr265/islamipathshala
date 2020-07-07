@@ -25,5 +25,4 @@ deploy:production:
         - find public -size 0 -type f -delete
         - rm public/sitemap.xml
         - s3cmd sync --delete-removed --delete-after --acl-public public/ s3://$PRODUCTION_S3_BUCKET_NAME
-        - curl -X POST "https://api.cloudflare.com/client/v4/zones/$PRODUCTION_CLOUDFLARE_ZONE_ID/purge_cache" -H "Authorization:Bearer $PRODUCTION_CLOUDFLARE_API_TOKEN" -H 'Content-Type:application/json' --data '{"purge_everything":true}'
     when: manual
