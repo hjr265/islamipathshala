@@ -41,6 +41,27 @@
 							{{.Content}}
 						</div>
 					{{end}}
+					{{if .Params.phrases}}
+						<br>
+					{{end}}
+					{{range .Params.phrases}}
+						{{if .ar}}
+							<dl>
+								<dt class="arabic uk-text-large uk-text-right">{{.ar}}</dt>
+								<dd class="bengali">
+									<div class="uk-text-large uk-text-right">{{.bn}}</div>
+									{{if .bnnote}}
+										<div class="note uk-text-right">{{.bnnote}}</div>
+									{{end}}
+								</dd>
+							</dl>
+						{{else}}
+							<br>
+						{{end}}
+					{{end}}
+					{{if .Params.words}}
+						<br>
+					{{end}}
 					{{range .Params.words}}
 						<dl>
 							<dt class="arabic uk-text-large">{{.ar}}</dt>
