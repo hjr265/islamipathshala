@@ -2,8 +2,8 @@ FROM alpine:3.9
 
 MAINTAINER ridwan@furqansoftware.com
 
-ENV HUGO_VERSION=0.64.1
-RUN apk add --update curl wget ca-certificates nodejs npm python py-pip libsass make
+ENV HUGO_VERSION=0.79.1
+RUN apk add --update curl wget ca-certificates git nodejs npm python py-pip libsass make
 RUN wget --no-check-certificate https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz && \
   tar xzf hugo_${HUGO_VERSION}_Linux-64bit.tar.gz -C /tmp && \
   rm -r hugo_${HUGO_VERSION}_Linux-64bit.tar.gz && \

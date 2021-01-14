@@ -8,21 +8,25 @@ cache:
 
 stages:
     - build
-    - deploy
+    - production
 
-deploy:production:
+production:
     image: registry.furqansoftware.net/islamipathshala/pwapp/foundry:2020.02.0
-    stage: deploy
+    stage: production
     environment:
         name: production
         url: https://islamipathshala.com/
     only:
-        - master
+        - tags
     script:
-        - echo "$PRODUCTION_HUGO_CONFIGURATION" > config.toml
-        - npm install
+        - npm install --also=dev
         - npm run build
-        - find public -size 0 -type f -delete
-        - rm public/sitemap.xml
-        - s3cmd sync --delete-removed --delete-after --acl-public public/ s3://$PRODUCTION_S3_BUCKET_NAME
-    when: manual
+        - sed -i s/"s3:\\/\\/$PRODUCTION_S3_BUCKET_NAME"/"&?region=$PRODUCTION_AWS_REGION\\&endpoint=$PRODUCTION_AWS_ENDPOINT\\&s3ForcePathStyle=true"/ config.toml
+        - hugo
+        - AWS_ACCESS_KEY_ID=$PRODUCTION_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$PRODUCTION_AWS_SECRET_ACCESS_KEY hugo deploy
+        - echo "$PRODUCTION_S3CMD_CONFIGURATION" > $HOME/.s3cfg
+        - s3cmd setacl -rP s3://$PRODUCTION_S3_BUCKET_NAME/
+    artifacts:
+        expire_in: 1 day
+        paths:
+            - public/
